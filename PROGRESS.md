@@ -2,6 +2,18 @@
 
 Running session log maintained by Claude Code. Newest entries first.
 
+## 2026-11-16 - Crying mood, fixed sad art, angry words, quicker single poses
+
+- **Done:**
+  - **Sad** frames replaced with the artist's fix (screen detail was missing). Matched to the old order by mouth shape: `sad/0-4` = sad_new Illustration1, 5, 3, 4, 2.
+  - New **crying** mood, `crying/0-4` = Illustration57, 4, 5, 3, 2 (closed → open, same pattern as sad). Two files had no `.png` extension. Key 7, right-stick click (R3, button 11). Triggers: crying, cry, sob, sobbing, boohoo, boo hoo, tears, waah, wah.
+  - **Angry** triggers added: mad, pissed, pissed off, furious, livid, so mad, grr.
+  - A mood can have its own `seconds` (overrides `voice.moodSeconds`). Surprised and smug (the single poses) now go back after 3 s instead of 10.
+  - Trigger matching now picks the match that *ends* last, so "boo hoo" goes to crying, not sad's "boo".
+  - README: crying listed, the 3 s for the single poses shown.
+  - Tested matching in node (13 phrases); README and face.html load headless with no errors. Not tested on the iPad. Not committed.
+- **Next:** Friend checks the crying frame order while talking, the new sad art, and whether 3 s feels right (2 is a one-number change).
+
 ## 2026-10-18 - Repo renamed; friend's name removed, history rewritten
 
 - **Done:** The GitHub repo is now `Scub3d/ChaosCosplay-s-Project`, and the local `origin` points there. Removed the friend's name from README.md (title), display-options.md (title, example hotspot SSID now `TennaFace`, `<hostname>.local`), mouth-test.html (title) and this log. Rewrote every commit the same way with `git filter-branch` and force-pushed, so the name isn't in any commit on GitHub. Commit hashes mentioned in older entries below are the pre-rewrite ones.

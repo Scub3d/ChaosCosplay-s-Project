@@ -105,7 +105,7 @@
   <section id="styles">
     <h2>3. The faces</h2>
     <div class="styles">
-      <figure><img src="assets/faces/Commissioned/happy/4.png" alt="Commissioned happy face, mouth open"><figcaption>The commissioned renders from the artist. Full-screen art with the screen glow built in. Moods: neutral, happy, angry, sad, plus the "surprised" and "smug" poses.</figcaption></figure>
+      <figure><img src="assets/faces/Commissioned/happy/4.png" alt="Commissioned happy face, mouth open"><figcaption>The commissioned renders from the artist. Full-screen art with the screen glow built in. Moods: neutral, happy, angry, sad, crying, plus the "surprised" and "smug" poses.</figcaption></figure>
     </div>
   </section>
 
@@ -173,7 +173,7 @@
   <section id="voice">
     <h2>9. Voice trigger words (optional)</h2>
     <p>The face can also change mood by itself when it hears certain words, for example "haha" makes it happy. It's <b id="voiceDefault">off</b> by default because Safari's speech recognition needs an internet connection, which events often don't have.</p>
-    <p>Turn it on or off with <span class="ctl" data-ctl="toggleVoice"></span> or the panel's <b>Voice on/off</b> button. A mood from a trigger word lasts <b id="voiceSecs">10</b> seconds and then goes back to the mood you picked with the controller. The trigger words for each mood are listed in the mood tables above.</p>
+    <p>Turn it on or off with <span class="ctl" data-ctl="toggleVoice"></span> or the panel's <b>Voice on/off</b> button. A mood from a trigger word lasts <b id="voiceSecs">10</b> seconds (the single "surprised" and "smug" poses: <b id="voiceSecsShort">3</b>) and then goes back to the mood you picked with the controller. The trigger words for each mood are listed in the mood tables above.</p>
     <div class="warn">If the mouth stops moving after voice is turned on, speech recognition may have taken over the microphone. Turn voice off and reload the page.</div>
   </section>
 
@@ -281,6 +281,8 @@
   }
   document.getElementById('voiceDefault').textContent = C.voice.enabled ? 'on' : 'off';
   document.getElementById('voiceSecs').textContent = C.voice.moodSeconds;
+  const shortSecs = Object.values(C.styles).flatMap(s => s.moods).find(m => m.seconds != null);
+  if (shortSecs) document.getElementById('voiceSecsShort').textContent = shortSecs.seconds;
   document.getElementById('barsWords').textContent = (C.voice.colorBars || []).map(w => '"' + w + '"').join(', ') || '(none set)';
 
   // full control table

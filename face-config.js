@@ -26,12 +26,15 @@ window.FACE_CONFIG = {
         { id: 'happy',     set: 'happy',   key: '2', button: 3,
           triggers: ['happy', 'haha', 'awesome', 'amazing', 'yay', 'fantastic', 'love it', 'ladies and gentlemen', 'aww', 'thank you', 'thanks', 'cute'] },
         { id: 'angry',     set: 'angry',   key: '3', button: 1,
-          triggers: ['angry', 'shut up', 'i hate', 'annoying', 'ugh', 'what the'] },
+          triggers: ['angry', 'mad', 'pissed', 'pissed off', 'furious', 'livid', 'so mad', 'grr', 'shut up', 'i hate', 'annoying', 'ugh', 'what the'] },
         { id: 'sad',       set: 'sad',     key: '6', button: 10,
           triggers: ['sad', 'oh no', 'sorry', 'so sad', 'unfortunately', 'boo'] },
-        { id: 'surprised', set: 'o-mouth', key: '4', button: 2,
+        { id: 'crying',    set: 'crying',  key: '7', button: 11,
+          triggers: ['crying', 'cry', 'sob', 'sobbing', 'boohoo', 'boo hoo', 'tears', 'waah', 'wah'] },
+        // seconds: how long this mood's trigger word lasts, instead of voice.moodSeconds
+        { id: 'surprised', set: 'o-mouth', key: '4', button: 2, seconds: 3,
           triggers: ['surprised', 'whoa', 'wow', 'oh my', 'omg', 'oh my god', 'no way'] },
-        { id: 'smug',      set: 'smirk',   key: '5', button: 4,
+        { id: 'smug',      set: 'smirk',   key: '5', button: 4, seconds: 3,
           triggers: ['smug', 'smog', 'smirk', 'whatever', 'duh', 'yeah right', 'nice try', 'naturally', 'obviously', 'of course', 'told you', 'heh'] },
       ],
     },
@@ -41,6 +44,7 @@ window.FACE_CONFIG = {
     enabled: false,         // trigger words at start. Off: Safari speech recognition needs internet. Toggle: V / Select
     lang: 'en-US',
     moodSeconds: 10,        // how long a trigger word's mood lasts before going back; 0 = until changed
+                            // (a mood's own `seconds` overrides this: surprised and smug use 3)
     // Words that switch the screen instead of the mood. Any mood's trigger word goes back to the face.
     colorBars: ['error', 'technical difficulties', 'please stand by'],
   },

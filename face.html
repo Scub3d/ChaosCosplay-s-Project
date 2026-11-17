@@ -151,8 +151,13 @@
   if (!C.styles[style]) style = C.styles[C.faceStyle] ? C.faceStyle : Object.keys(C.styles)[0];
   let moods, moodById, triggers = [];
   let baseMood;                                                             // set by controller / keyboard
-  let voiceMood = null, voiceUntil = 0;                                     // set by trigger words
-  const currentMood = () => (voiceMood && (C.voice.moodSeconds <= 0 || performance.now() < voiceUntil)) ? voiceMood : baseMood;
+  let voiceMood = null, voiceUntil = 0;                                     // set by trigger words; Infinity = held
+  const currentMood = () => (voiceMood && performance.now() < voiceUntil) ? voiceMood : baseMood;
+  // a mood's own `seconds` overrides voice.moodSeconds (e.g. the single poses go back sooner)
+  const voiceMoodUntil = id => {
+    const s = moodById[id]?.seconds ?? C.voice.moodSeconds;
+    return s > 0 ? performance.now() + s * 1000 : Infinity;
+  };
   function setBaseMood(id) { baseMood = id; voiceMood = null; backToFace(); }
   function stepMood(d) {
     const i = moods.findIndex(m => m.id === currentMood());
@@ -371,7 +376,8 @@
           const hits = [...text.matchAll(t.re)];
           const key = t.re.source;
           if (hits.length > (seen[key] || 0)) {
-            const pos = hits[hits.length - 1].index;
+            // where the match ends, so a longer phrase beats a shorter one inside it ("boo hoo" over "boo")
+            const last = hits[hits.length - 1], pos = last.index + last[0].length;
             if (!best || pos > best.pos) best = { ...t, pos };
           }
           // also lower the count: Safari can reuse a result slot for a new phrase, and a stale count
@@ -381,7 +387,7 @@
         if (best) {
           vlog(`"${best.word}" -> ${best.bars ? 'colour bars' : best.mood}`);
           if (best.bars) { if (tvMode !== 'bars') toggleBars(); }
-          else { voiceMood = best.mood; voiceUntil = performance.now() + C.voice.moodSeconds * 1000; backToFace(); }
+          else { voiceMood = best.mood; voiceUntil = voiceMoodUntil(best.mood); backToFace(); }
         }
       }
     };
@@ -521,10 +527,10 @@
     $('dFloor').textContent = calibrateUntil ? 'learning' : floorDb.toFixed(1);
     $('dFrame').textContent = `${frameIdx}${isOpen ? ' (open)' : ''}`;
     $('meterBar').style.width = Math.max(0, Math.min(100, (level + 70) / 70 * 100)) + '%';
-    const vm = voiceMood && (C.voice.moodSeconds <= 0 || now < voiceUntil);
+    const vm = voiceMood && now < voiceUntil;
     $('dStyle').textContent = style;
     $('dMood').textContent = currentMood();
-    $('dMoodInfo').textContent = vm ? `(voice, ${C.voice.moodSeconds > 0 ? Math.ceil((voiceUntil - now) / 1000) + ' s left' : 'held'}; base ${baseMood})` : '(base)';
+    $('dMoodInfo').textContent = vm ? `(voice, ${voiceUntil < Infinity ? Math.ceil((voiceUntil - now) / 1000) + ' s left' : 'held'}; base ${baseMood})` : '(base)';
     $('dVoice').textContent = voiceStatus;
     $('voiceBtn').textContent = !SR ? 'Voice: not supported here' : voiceOn ? `Voice: on (${voiceStatus}) - tap to turn off`
       : voiceStatus.startsWith('error') ? 'Voice: off (error, see voice line) - tap to retry' : 'Voice: off - tap to turn on';
