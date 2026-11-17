@@ -11,8 +11,8 @@ Running session log maintained by Claude Code. Newest entries first.
   - A mood can have its own `seconds` (overrides `voice.moodSeconds`). Surprised and smug (the single poses) now go back after 3 s instead of 10.
   - Trigger matching now picks the match that *ends* last, so "boo hoo" goes to crying, not sad's "boo".
   - README: crying listed, the 3 s for the single poses shown.
-  - Tested matching in node (13 phrases); README and face.html load headless with no errors. Not tested on the iPad. Not committed.
-- **Next:** Friend checks the crying frame order while talking, the new sad art, and whether 3 s feels right (2 is a one-number change).
+  - Tested matching in node (13 phrases); README and face.html load headless with no errors. Not tested on the iPad. Pushed as 831447a. Plain `git push` had no credentials; pushed via `gh auth git-credential`.
+- **Next:** User tests on the iPad; friend checks the crying frame order while talking, the new sad art, and whether 3 s feels right (2 is a one-number change).
 
 ## 2026-10-18 - Repo renamed; friend's name removed, history rewritten
 
